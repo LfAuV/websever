@@ -3,6 +3,7 @@
 
 #include<iostream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <cstring>      // memset
 #include <cstdlib>      // exit

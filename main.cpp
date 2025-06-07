@@ -1,5 +1,5 @@
 #include "unp.hpp"
-using namespace std;
+
 
 /*
 
@@ -37,7 +37,29 @@ int main(int argc, char**argv){
     memset(&servaddr, 0, sizeof(servaddr));// 清空
     servaddr.sin_family = AF_INET;
 
-    cout << "AF_INET=" << AF_INET << endl;
+    // cout << "AF_INET=" << AF_INET << endl;
+
+    servaddr.sin_port = htons(13); // 设置端口号（13 是 Daytime 服务的默认端口）
+
+    /*
+    inet_pton是一个函数，从文本到网络（无所谓）->将用户输入的IP地址字符串（如"127.0.0.1"）
+    转换为网络字节序的二进制格式，并存储到 servaddr.sin_addr 中。
+    Input:
+    第一个参数 AF_INET 表示使用 IPv4 地址族。
+    第二个参数 argv[1] 是你从命令行获取的 IP 地址字符串。
+    第三个参数 &servaddr.sin_addr 是转换后存储的目标地址（以二进制形式存储）。->结构体地址
+
+    Output:
+    成功返回1
+    输入IP无效返回0
+    出错返回-1
+
+    */
+    if(inet_pton(AF_INET, argv[1], &servaddr.sin_addr)<=0){
+        std::stringstream ss;
+        ss << "inet_pton error for" << argv[1];
+        err_quit(ss.str()); // 将 IP 字符串转换为网络字节序
+    }
 
     return 0;
 }
